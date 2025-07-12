@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visualizador de Bonds</title>
+  <title>Bond Visualizer</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Estilo global moderno e responsivo */
     :root {
       --primary: #007bff;
       --light-bg: #f9f9f9;
@@ -120,42 +119,42 @@
   </style>
 </head>
 <body>
-  <h1>Visualizador de Bonds (JSON ou CSV → Tabela)</h1>
+  <h1>Bond Visualizer (JSON or CSV → Table)</h1>
 
-  <!-- Upload do arquivo -->
+  <!-- File Upload -->
   <input type="file" id="fileInput" accept=".json, .csv">
 
-  <!-- Botão para alternar explicação -->
-  <button id="toggleExplanation">Mostrar explicação</button>
+  <!-- Toggle explanation button -->
+  <button id="toggleExplanation">Show Explanation</button>
 
-  <!-- Bloco ocultável de explicação -->
+  <!-- Explanation box -->
   <div class="explanation" id="explanationBox" style="display: none;">
-    <h2>📘 Explicação dos Cálculos</h2>
-    <p><strong>YTM (Yield to Maturity):</strong> Retorno anualizado estimado do bond até o vencimento:</p>
+    <h2>📘 Explanation of Calculations</h2>
+    <p><strong>YTM (Yield to Maturity):</strong> Estimated annual return of the bond if held to maturity:</p>
     <pre>YTM ≈ [C + (F - P) / n] / [(F + P) / 2]</pre>
     <ul>
-      <li>C = Cupom anual</li>
-      <li>F = Valor nominal</li>
-      <li>P = Preço de mercado</li>
-      <li>n = Anos até o vencimento</li>
+      <li>C = Annual coupon</li>
+      <li>F = Face value</li>
+      <li>P = Market price</li>
+      <li>n = Years until maturity</li>
     </ul>
 
-    <p><strong>Current Yield:</strong> Retorno anual com base apenas no cupom e preço atual:</p>
-    <pre>Current Yield = (Cupom Anual / Preço Atual) × 100</pre>
+    <p><strong>Current Yield:</strong> Annual return based only on the coupon and current price:</p>
+    <pre>Current Yield = (Annual Coupon / Current Price) × 100</pre>
 
-    <p><strong>Duration:</strong> Tempo médio ponderado de recebimento dos fluxos:</p>
+    <p><strong>Duration:</strong> Weighted average time of cash flow receipts:</p>
     <pre>Duration = Σ[t × PV(CFₜ)] / Σ[PV(CFₜ)]</pre>
     <ul>
-      <li>t = tempo (anos)</li>
-      <li>CFₜ = fluxo de caixa no ano t</li>
-      <li>PV(CFₜ) = valor presente de CFₜ</li>
+      <li>t = time (years)</li>
+      <li>CFₜ = cash flow at year t</li>
+      <li>PV(CFₜ) = present value of CFₜ</li>
     </ul>
   </div>
 
-  <!-- Área de conteúdo principal -->
+  <!-- Main content -->
   <div class="content">
 
-    <!-- Tabela dos bonds -->
+    <!-- Bond table -->
     <div class="table-container">
       <table id="bondTable" style="display: none;">
         <thead>
@@ -166,23 +165,23 @@
             <th>Maturity</th>
             <th>YTM (%)</th>
             <th>Current Yield (%)</th>
-            <th>Duration (anos)</th>
+            <th>Duration (years)</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
     </div>
 
-    <!-- Gráfico com seletor -->
+    <!-- Chart area with selector -->
     <div id="chart-container">
-      <label for="bondSelect"><strong>Selecionar Títulos:</strong></label>
+      <label for="bondSelect"><strong>Select Bonds:</strong></label>
       <select id="bondSelect" multiple></select>
       <canvas id="bondChart" height="250"></canvas>
     </div>
 
   </div>
 
-  <!-- Script JS externo -->
+  <!-- External JS script -->
   <script src="scripts.js"></script>
 </body>
 </html>
