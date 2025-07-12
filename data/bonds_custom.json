@@ -1,0 +1,20 @@
+[
+  {
+    "Symbol":"US10Y",
+    "Price":98.5,
+    "Coupon":2.5,
+    "Maturity":"2034-01-15"
+  },
+  {
+    "Symbol":"CORP01",
+    "Price":102.25,
+    "Coupon":4.0,
+    "Maturity":"2029-06-30"
+  },
+  {
+    "Symbol":"GOVT05",
+    "Price":99.75,
+    "Coupon":1.75,
+    "Maturity":"2028-12-31"
+  }
+]

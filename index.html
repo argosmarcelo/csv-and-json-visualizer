@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizador de Bonds</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Estilo global moderno e responsivo */
+    :root {
+      --primary: #007bff;
+      --light-bg: #f9f9f9;
+      --card-bg: #ffffff;
+      --border-color: #ddd;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--light-bg);
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    input[type="file"] {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .table-container, #chart-container {
+      flex: 1 1 100%;
+      background: var(--card-bg);
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    @media (min-width: 768px) {
+      .table-container { flex: 1 1 60%; }
+      #chart-container { flex: 1 1 35%; }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid var(--border-color);
+      text-align: left;
+    }
+
+    th {
+      background-color: #f0f0f0;
+    }
+
+    .explanation {
+      margin-top: 20px;
+      background: var(--card-bg);
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    .explanation h2 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .explanation pre {
+      background-color: #f7f7f7;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Visualizador de Bonds (JSON ou CSV → Tabela)</h1>
+
+  <!-- Upload do arquivo -->
+  <input type="file" id="fileInput" accept=".json, .csv">
+
+  <!-- Botão para alternar explicação -->
+  <button id="toggleExplanation">Mostrar explicação</button>
+
+  <!-- Bloco ocultável de explicação -->
+  <div class="explanation" id="explanationBox" style="display: none;">
+    <h2>📘 Explicação dos Cálculos</h2>
+    <p><strong>YTM (Yield to Maturity):</strong> Retorno anualizado estimado do bond até o vencimento:</p>
+    <pre>YTM ≈ [C + (F - P) / n] / [(F + P) / 2]</pre>
+    <ul>
+      <li>C = Cupom anual</li>
+      <li>F = Valor nominal</li>
+      <li>P = Preço de mercado</li>
+      <li>n = Anos até o vencimento</li>
+    </ul>
+
+    <p><strong>Current Yield:</strong> Retorno anual com base apenas no cupom e preço atual:</p>
+    <pre>Current Yield = (Cupom Anual / Preço Atual) × 100</pre>
+
+    <p><strong>Duration:</strong> Tempo médio ponderado de recebimento dos fluxos:</p>
+    <pre>Duration = Σ[t × PV(CFₜ)] / Σ[PV(CFₜ)]</pre>
+    <ul>
+      <li>t = tempo (anos)</li>
+      <li>CFₜ = fluxo de caixa no ano t</li>
+      <li>PV(CFₜ) = valor presente de CFₜ</li>
+    </ul>
+  </div>
+
+  <!-- Área de conteúdo principal -->
+  <div class="content">
+
+    <!-- Tabela dos bonds -->
+    <div class="table-container">
+      <table id="bondTable" style="display: none;">
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Price</th>
+            <th>Coupon</th>
+            <th>Maturity</th>
+            <th>YTM (%)</th>
+            <th>Current Yield (%)</th>
+            <th>Duration (anos)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Gráfico com seletor -->
+    <div id="chart-container">
+      <label for="bondSelect"><strong>Selecionar Títulos:</strong></label>
+      <select id="bondSelect" multiple></select>
+      <canvas id="bondChart" height="250"></canvas>
+    </div>
+
+  </div>
+
+  <!-- Script JS externo -->
+  <script src="scripts.js"></script>
+</body>
+</html>
